@@ -1,0 +1,124 @@
+---
+title: "2020 Suncorp Super Netball Analysis"
+author: "Emily Partridge"
+date: "2023-03-12"
+output: 
+  html_document:
+    code_folding: hide
+---
+
+```{r setup, r.options=knitr::opts_chunk$set(warnings=FALSE, message=FALSE, fig.width=12, fig.height=8)}
+```
+
+```{r PackagesData}
+# Load required packages
+library(readr)
+library(tidyverse)
+library(kableExtra)
+library(plotly)
+library(ggdark)
+
+# Load in the performance data
+RawData <- read_csv("Data/Dataset3_Assessment3.csv")
+```
+
+# General Play Turnovers
+
+#### Tibble of team general play turnovers
+```{r Create Tibble of GPT}
+# Create tibble for general play turnovers
+RawData %>%
+  filter(Statistic == "generalPlayTurnovers")
+```
+
+#### 20 athletes with the most season general play turnovers
+```{r NeaterTable, warning=FALSE}
+# Create a summary table of performance data
+RawData %>% 
+  filter(Statistic=="generalPlayTurnovers") %>% 
+  group_by(Athlete, Team) %>% 
+  summarise(Sum = round(sum(Total), 1)) %>% 
+  arrange(desc(Sum)) %>%
+  head(20) %>%
+  mutate(across(where(is.numeric), round, 1)) %>%
+  kbl() %>%
+  kable_minimal()
+```
+
+### Sum of all general play turnovers for the 2020 Suncorp Netball Season
+```{r InteractiveFigure1, warning=FALSE}
+# Create a plot for sum of GPT over season for each team
+RawData %>% filter(Statistic=="generalPlayTurnovers") %>% group_by(Team) %>% summarise(Sum = round(sum(Total), 1)) %>% 
+  arrange(desc(Sum)) %>% ggplot(aes(x = reorder(Team, -Sum), y = Sum)) +
+  geom_point(size = 10) + geom_segment(aes(x = Team, y = 0, xend = Team, yend = Sum), linetype = "dashed") +
+  geom_text(aes(label = Sum), size = 4, colour = "black", check_overlap = TRUE) +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 400), breaks = seq(0,500, by = 50)) +
+  labs(x = NULL, y = "Number of General Play Turnovers \n", title = "\n Suncorp Super Netball 2020 \n General Play Turnovers \n") +
+  dark_theme_gray()  + theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+        plot.background = element_rect(fill = "grey10"), panel.background = element_blank(),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.background = element_blank(),
+        axis.title.y = element_text(size = 12, face = "bold"), axis.ticks.x =  element_line(color = "grey30", size = 0.1),
+        axis.line.x =  element_line(color = "grey30", size = 0.1), 
+        axis.text.x = element_text(size = 12, face = "bold", angle = 45, vjust = 1, hjust = 1),
+        axis.ticks.y =  element_line(color = "grey30", size = 0.1), axis.line.y =  element_line(color = "grey30", size = 0.1),
+        axis.text.y = element_text(size = 10, face = "bold"),legend.title = element_blank(), legend.position = "none")
+```
+
+# Successful Goals From Zone 1
+
+#### 2020 Season goal scorers
+```{r NeaterTable2, warning=FALSE}
+# Remove zeros from data frame
+RawData_new <- filter_if(RawData, is.numeric, all_vars((.) != 0))
+
+# Create a summary table of individual goals in zone 1 data
+RawData_new %>% 
+  filter(Statistic=="goal_from_zone1") %>% 
+  group_by(Athlete, Team) %>% 
+  summarise(Sum = round(sum(Total), 1)) %>%
+  arrange(desc(Sum)) %>%
+  mutate(across(where(is.numeric), round, 1)) %>%
+  kbl() %>%
+  kable_minimal()
+```
+
+### Sum of Top 10 individual successful shots from zone 1
+```{r IntegrativePlot2, warning=FALSE}
+#  Plot the top 10 athletes for statistics = goal_from_zone1
+RawData %>% filter(Statistic=="goal_from_zone1") %>% group_by(Team) %>% summarise(Sum = round(sum(Total), 1)) %>%  
+  arrange(desc(Sum)) %>% head(10) %>% ggplot(aes(x = reorder(Team, -Sum), y = Sum)) +
+  geom_point(size = 10) + geom_segment(aes(x = Team, y = 0, xend = Team, yend = Sum), linetype = "dashed") +
+  geom_text(aes(label = Sum), size = 4, colour = "black", check_overlap = TRUE) +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 900), breaks = seq(0,900, by = 100)) +
+  labs(x = NULL, y = "Number of Feeds with Attempt \n", title = "\n Suncorp Super Netball 2020 \n Goals from Zone 1 (Individual Players) \n") +
+  dark_theme_gray()  + theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+        plot.background = element_rect(fill = "grey10"), panel.background = element_blank(),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.background = element_blank(),
+        axis.title.y = element_text(size = 12, face = "bold"), axis.ticks.x =  element_line(color = "grey30", size = 0.1),
+        axis.line.x =  element_line(color = "grey30", size = 0.1), 
+        axis.text.x = element_text(size = 12, face = "bold", angle = 45, vjust = 1, hjust = 1),
+        axis.ticks.y =  element_line(color = "grey30", size = 0.1), axis.line.y =  element_line(color = "grey30", size = 0.1),
+        axis.text.y = element_text(size = 10, face = "bold"),legend.title = element_blank(), legend.position = "none")
+``` 
+--------
+--------
+
+
+#### Question 4a: What was the first thing you did when you loaded the dataset? Summary statistics? A visualisation? Exploratory data analysis?
+First thing I completed after importing the data was to create a tibble of the data for exploratory data analysis by looking at the first and last 10 rows using the head() and tail() functions. I filtered the data to look at the two variables of generalPlayTurnovers and goal_from_zone1 using the filter() function. I then used teh ggplot() function to do a quick exploratory plot to view the ranges of the variables 
+
+#### Question 4b: How did you choose to explore the data? Did you perform any summary statistics to help you further explore the data?
+For both data variables explored (goal_from_zone1 and generalPlayTurnovers) I used sum() function to get the totals by athlete or team.
+
+#### Question 4c: What packages did you use to visualise data?
+tidyverse to use the ggplot2, dyplr, %>% functions to tidy and present the data
+kableExtra package was used for the table visualisation
+Plotly for the visual plots
+ggdark for the plot aesthetic colours that are also colour blind friendly
+
+#### Question 4d: Did you encounter any issues? Errors? How did you overcome them?
+When presenting the data in neat tables I had to figure out how to remove the 0 values from each row. I used the filter_if() function to only include data < 0 in the table of goal_from_zone1 performance data.
+
+I also had an issue with the data not being presented in the plot of goal_from_zone1 but no errors indicating why, so took a little while to realise that it was simply due to the y-axis limits needing to be increased to show the data!
+
+#### Question 4e: Do you have any interpretations/ find anything interesting from that dataset that coaches, athletes or performance staff might be able to use in their practice?
