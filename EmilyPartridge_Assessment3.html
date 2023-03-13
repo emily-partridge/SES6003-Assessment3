@@ -680,26 +680,6 @@ library(ggdark)
 RawData &lt;- read_csv(&quot;Data/Dataset3_Assessment3.csv&quot;)</code></pre>
 <div id="general-play-turnovers" class="section level1">
 <h1>General Play Turnovers</h1>
-<div id="tibble-of-team-general-play-turnovers" class="section level4">
-<h4>Tibble of team general play turnovers</h4>
-<pre class="r"><code># Create tibble for general play turnovers
-RawData %&gt;%
-  filter(Statistic == &quot;generalPlayTurnovers&quot;)</code></pre>
-<pre><code>## # A tibble: 109 × 4
-##    Athlete     Statistic            Team                  Total
-##    &lt;chr&gt;       &lt;chr&gt;                &lt;chr&gt;                 &lt;dbl&gt;
-##  1 Aiken, R    generalPlayTurnovers Queensland Firebirds     62
-##  2 Allen, N    generalPlayTurnovers Collingwood Magpies      10
-##  3 Altmann, K  generalPlayTurnovers Collingwood Magpies      32
-##  4 Anstiss, J  generalPlayTurnovers West Coast Fever         18
-##  5 Aryang, S   generalPlayTurnovers West Coast Fever          8
-##  6 Austin, K   generalPlayTurnovers GIANTS Netball           75
-##  7 Bassett, C  generalPlayTurnovers GIANTS Netball           20
-##  8 Black, K    generalPlayTurnovers Collingwood Magpies       1
-##  9 Blackman, C generalPlayTurnovers Adelaide Thunderbirds     2
-## 10 Bragg, M    generalPlayTurnovers Collingwood Magpies      32
-## # … with 99 more rows</code></pre>
-</div>
 <div id="athletes-with-the-most-season-general-play-turnovers" class="section level4">
 <h4>20 athletes with the most season general play turnovers</h4>
 <pre class="r"><code># Create a summary table of performance data
@@ -1442,6 +1422,13 @@ increased to show the data!</p>
 <h4>Question 4e: Do you have any interpretations/ find anything
 interesting from that dataset that coaches, athletes or performance
 staff might be able to use in their practice?</h4>
+<p>Regarding general play turnovers, staff may be able to focus on
+athletes that have high rates of turnovers during in-season games for
+training drills to improve these statistics moving forward. Ideally, a
+dataset for a game could include statistics for each quarter and player
+position to delve deeper into the rates of turnovers by athlete.</p>
+<p>The visualisation of goals from zones 1 simply illustrates the top
+athletes for goal scoring accross teh 2020 season.</p>
 </div>
 </div>
 </div>

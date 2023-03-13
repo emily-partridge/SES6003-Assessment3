@@ -24,13 +24,6 @@ RawData <- read_csv("Data/Dataset3_Assessment3.csv")
 
 # General Play Turnovers
 
-#### Tibble of team general play turnovers
-```{r Create Tibble of GPT}
-# Create tibble for general play turnovers
-RawData %>%
-  filter(Statistic == "generalPlayTurnovers")
-```
-
 #### 20 athletes with the most season general play turnovers
 ```{r NeaterTable, warning=FALSE}
 # Create a summary table of performance data
@@ -122,3 +115,6 @@ When presenting the data in neat tables I had to figure out how to remove the 0 
 I also had an issue with the data not being presented in the plot of goal_from_zone1 but no errors indicating why, so took a little while to realise that it was simply due to the y-axis limits needing to be increased to show the data!
 
 #### Question 4e: Do you have any interpretations/ find anything interesting from that dataset that coaches, athletes or performance staff might be able to use in their practice?
+Regarding general play turnovers, staff may be able to focus on athletes that have high rates of turnovers during in-season games for training drills to improve these statistics moving forward. Ideally, a dataset for a game could include statistics for each quarter and player position to delve deeper into the rates of turnovers by athlete.
+
+The visualisation of goals from zones 1 simply illustrates the top athletes for goal scoring accross teh 2020 season.
